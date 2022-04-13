@@ -62,11 +62,7 @@ userSchema.methods.createAuthToken = async function() {
 
     return token;
 };
-/*
-Короче, как я понял это небольшой твик (костыль), весь прикол в том что эта функция вызываеться каждый раз 
-когда мы вызываем res.send() для того чтобы объект в json превратить и соответсвенно когда мы тут меняем 
-проведение этой функции, мы меняем её поведение при вызове внутри express-а
-*/
+
 userSchema.methods.toJSON = function() {
     const user = this
     const userData = user.toObject();
@@ -78,7 +74,6 @@ userSchema.methods.toJSON = function() {
     return userData
 };
 
-//Статик который ищет пользователя по емайлу и паролю
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
 
@@ -91,7 +86,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 }
 
-//мидлварь которая отвечает за хэщирование пароля перед его сохранением
 userSchema.pre('save', async function (next) {
     const user = this
 
